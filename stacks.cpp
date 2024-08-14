@@ -563,6 +563,6 @@ s = {0, 1, 2, 3, 4, 5}: Index of the sixth element is pushed.
 
 ////// Largest rectangular area in a histogram
 
-
+void
 
 
