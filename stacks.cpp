@@ -385,31 +385,30 @@ using namespace std;
 //   return 0;
 // }
 
-
 //// Stock span problem
 
- // void printSpan(int arr[],int n){
+// void printSpan(int arr[],int n){
 
- //   stack<int> s ;
- //   s.push(0);
- //   cout<<1<<" ";
- //   for(int i=1;i<n;i++){
- //       while(s.empty()==false && arr[s.top()]<=arr[i]){
- //           s.pop();
- //       }
- //       int span=s.empty() ? i+1 : i-s.top();
- //       cout<<span<<" ";
- //       s.push(i);
- //   }
- // }
+//   stack<int> s ;
+//   s.push(0);
+//   cout<<1<<" ";
+//   for(int i=1;i<n;i++){
+//       while(s.empty()==false && arr[s.top()]<=arr[i]){
+//           s.pop();
+//       }
+//       int span=s.empty() ? i+1 : i-s.top();
+//       cout<<span<<" ";
+//       s.push(i);
+//   }
+// }
 
- // int main() 
- // { 
- //   int arr[]={18,12,13,14,11,16};
- //   int n=6;
- //   printSpan(arr,n);
- //   return 0; 
- // }
+// int main()
+// {
+//   int arr[]={18,12,13,14,11,16};
+//   int n=6;
+//   printSpan(arr,n);
+//   return 0;
+// }
 
 /*
 
@@ -451,7 +450,6 @@ s = {0, 1, 2, 3, 4, 5}: Index of the sixth element is pushed.
 
     */
 
-
 //// Previous greater element
 
 //// Naive
@@ -464,26 +462,107 @@ s = {0, 1, 2, 3, 4, 5}: Index of the sixth element is pushed.
 //                 cout << arr[j] << " ";
 //                 break;
 //             }
-            
+
 //         }
 //         if(j==-1)
 //             cout << -1 <<" ";
+//     }
+
+// }
+
+//// Efficient
+
+// void printPrevGreater(int arr[], int n){
+//    stack<int> s;
+//    s.push(arr[0]);
+//    for(int i=0; i<n; i++){
+//     while(s.empty()==false && s.top()<=arr[i]){
+//         s.pop();
+//     }
+//     int pg = s.empty()?-1:s.top();
+//     cout<<pg<<" ";
+//     s.push(arr[i]);
+//    }
+// }
+
+// int main()
+// {
+//     int arr[]={20,30,10,5,15};
+//     int n=5;
+//     printPrevGreater(arr,n);
+//     return 0;
+// }
+
+//// Next greater element
+
+//// Naive
+
+// void printNextGreater(int arr[], int n){
+//     for(int i=0; i<n; i++){
+//         int j;
+//         for(j = i+1; j<n; j++){
+//             if(arr[j]>arr[i]){
+//                 cout << arr[j]<<" ";
+//                 break;
+//             }
+//         }
+//         if(j==n)
+//         cout << -1 << " ";
 //     }
     
 // }
 
 
-//// Efficient
+//// Efficient O(N)
 
-void printPrevGreater(int arr[], int n){
+// void printNextGreater(int arr[], int n){
+//     stack<int> s;
+//     s.push(arr[n-1]);
+//     cout << "-1" << " ";
+//     for(int i=n-2; i>=0; i--){
+//         while(s.empty() == false && s.top()<=arr[i]){
+//             s.pop();
+//         }
+//         int nextGr = (s.empty()) ? (-1) : (s.top());
+//         cout << nextGr << " ";
+//         s.push(arr[i]);
+//     }
+// }
+
+//// using vector
+
+// vector<int> printNextGreater(int arr[], int n){
+//     vector<int> v;
+//     stack<int> s;
+//     s.push(arr[n-1]);
+//     v.push_back(-1);
+
+//     for(int i=n-2; i>=0; i--){
+//         while(s.empty()==false && s.top()<=arr[i]){
+//             s.pop();
+//         }
+//         int ng = s.empty() ? -1 : s.top();
+//         v.push_back(ng);
+//         s.push(arr[i]);
+//     }
+//     reverse(v.begin(), v.end());
+//     return v;
+// }
+
+// int main()
+// {
+//     int arr[]={5,15,10,8,6,12,9,18};
+//     int n=8;
+//     for(int x: printNextGreater(arr,n)){
+//         cout<<x<< " ";   
+//     }
     
-}
+//     return 0;
+// }
 
 
-int main() 
-{ 
-    int arr[]={20,30,10,5,15};
-    int n=5;
-    printPrevGreater(arr,n);
-    return 0; 
-}
+////// Largest rectangular area in a histogram
+
+
+
+
