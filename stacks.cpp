@@ -565,37 +565,269 @@ s = {0, 1, 2, 3, 4, 5}: Index of the sixth element is pushed.
 
 //// Naive
 
-int getMaxArea(int arr[], int n){
-    int res = 0;
-    for(int i=0 ; i<n; i++){
-        int curr = arr[i];
-        for(int j=i-1; j>=0; j--){
-            if(arr[j]>=arr[i]){
-                curr+=arr[i];
-            }
-            else{
-                break;
-            }
-        }
-         for(int j=i+1; j<n; j++){
-            if(arr[j]>=arr[i]){
-                curr+=arr[i];
-            }
-            else{
-                break;
-            }
-        }
-        res = max(res,curr);
-    }
-    return res;
-}
+// // int getMaxArea(int arr[], int n){
+//     int res = 0;
+//     for(int i=0 ; i<n; i++){
+//         int curr = arr[i];
+//         for(int j=i-1; j>=0; j--){
+//             if(arr[j]>=arr[i]){
+//                 curr+=arr[i];
+//             }
+//             else{
+//                 break;
+//             }
+//         }
+//          for(int j=i+1; j<n; j++){
+//             if(arr[j]>=arr[i]){
+//                 curr+=arr[i];
+//             }
+//             else{
+//                 break;
+//             }
+//         }
+//         res = max(res,curr);
+//     }
+//     return res;
+// }
+
+///// Better solution
+
+// int getMaxArea(int arr[],int n){
+//     int res=0;
+//     int ps[n],ns[n];
+    
+//     stack <int> s;
+//     s.push(0);
+//     for(int i=0;i<n;i++){
+//         while(s.empty()==false && arr[s.top()]>=arr[i])
+//             s.pop();
+//         int pse=s.empty()?-1:s.top();
+//         ps[i]=pse;
+//         s.push(i);
+//     }
+    
+//     while(s.empty()==false){
+//         s.pop();
+//     }
+    
+//     s.push(n-1);
+//     for(int i=n-1;i>0;i--){
+//         while(s.empty()==false && arr[s.top()]>=arr[i])
+//             s.pop();
+//         int nse=s.empty()?n:s.top();
+//         ns[i]=nse;
+//         s.push(i);
+//     }
+    
+//     for(int i=0;i<n;i++){
+//         int curr=arr[i];
+//         curr+=(i-ps[i]-1)*arr[i];
+//         curr+=(ns[i]-i-1)*arr[i];
+//         res=max(res,curr);
+//     }
+//     return res;
+    
+// }
 
 
-int main() 
-{ 
-    int arr[]={6,2,5,4,1,5,6};
-    int n=7;
-    cout<<"Maximum Area: "<<getMaxArea(arr,n);
-    return 0; 
-}
+//// Efficient solution
+
+// int getMaxArea(int arr[],int n){
+//     stack <int> s;
+//     int res=0;
+//     int tp;
+//     int curr;
+    
+//     for(int i=0;i<n;i++){
+//         while(s.empty()==false && arr[s.top()]>=arr[i]){
+//             tp=s.top();s.pop();
+//             curr=arr[tp]* (s.empty() ? i : i - s.top() - 1);
+//             res=max(res,curr);
+//         }
+//         s.push(i);
+//     }
+
+//     //// Processing remaining elements of stack
+//     while(s.empty()==false){
+//         tp=s.top();s.pop();
+//         curr=arr[tp]* (s.empty() ? n : n - s.top() - 1);
+//         res=max(res,curr);
+//     }
+    
+//     return res;
+// }
+
+
+// int main() 
+// { 
+//     int arr[]={6,2,5,4,1,5,6};
+//     int n=7;
+//     cout<<"Maximum Area: "<<getMaxArea(arr,n);
+//     return 0; 
+// }
+
+//// Largest rectangle with all 1's
+
+// // Rows and columns in input matrix
+// #define R 4
+// #define C 4
+
+// // Finds the maximum area under 
+// // the histogram represented
+// // by histogram.  See below article for details.
+
+
+// int maxHist(int row[])
+// {
+//     // Create an empty stack. 
+//     // The stack holds indexes of
+//     // hist[] array/ The bars stored 
+//     // in stack are always
+//     // in increasing order of their heights.
+//     stack<int> result;
+
+//     int top_val; // Top of stack
+
+//     int max_area = 0; // Initialize max area in current
+//     // row (or histogram)
+
+//     int area = 0; // Initialize area with current top
+
+//     // Run through all bars of given histogram (or row)
+//     int i = 0;
+//     while (i < C) {
+//         // If this bar is higher than the bar on top stack,
+//         // push it to stack
+//         if (result.empty() || row[result.top()] <= row[i])
+//             result.push(i++);
+
+//         else {
+//             // If this bar is lower than top of stack, then
+//             // calculate area of rectangle with stack top as
+//             // the smallest (or minimum height) bar. 'i' is
+//             // 'right index' for the top and element before
+//             // top in stack is 'left index'
+//             top_val = row[result.top()];
+//             result.pop();
+//             area = top_val * i;
+
+//             if (!result.empty())
+//                 area = top_val * (i - result.top() - 1);
+//             max_area = max(area, max_area);
+//         }
+//     }
+
+//     // Now pop the remaining bars from stack and calculate
+//     // area with every popped bar as the smallest bar
+//     while (!result.empty()) {
+//         top_val = row[result.top()];
+//         result.pop();
+//         area = top_val * i;
+//         if (!result.empty())
+//             area = top_val * (i - result.top() - 1);
+
+//         max_area = max(area, max_area);
+//     }
+//     return max_area;
+// }
+
+// // Returns area of the largest rectangle with all 1s in
+// // A[][]
+// int maxRectangle(int A[][C])
+// {
+//     // Calculate area for first row and initialize it as
+//     // result
+//     int result = maxHist(A[0]);
+
+//     // iterate over row to find maximum rectangular area
+//     // considering each row as histogram
+//     for (int i = 1; i < R; i++) {
+
+//         for (int j = 0; j < C; j++)
+
+//             // if A[i][j] is 1 then add A[i -1][j]
+//             if (A[i][j])
+//                 A[i][j] += A[i - 1][j];
+
+//         // Update result if area with current row (as last
+//         // row) of rectangle) is more
+//         result = max(result, maxHist(A[i]));
+//     }
+
+//     return result;
+// }
+
+// // Driver code
+// int main()
+// {
+//     int A[][C] = {
+//         { 0, 1, 1, 0 },
+//         { 1, 1, 1, 1 },
+//         { 1, 1, 1, 1 },
+//         { 1, 1, 0, 0 },
+//     };
+
+//     cout << "Area of maximum rectangle is "
+//          << maxRectangle(A);
+
+//     return 0;
+// }
+
+
+////  Design a stack that supports getMin()
+
+// struct MyStack {
+ 
+//     stack<int> ms;
+//     stack<int> as;
+ 
+// void push(int x) {
+ 
+//       if(ms.empty() ) {
+//           ms.push(x);
+//           as.push(x);
+//           return;
+//       }
+      
+//       ms.push(x);
+      
+//       if(as.top()>=ms.top())
+//         as.push(x);
+//    }
+ 
+// void pop() {
+ 
+//     if(as.top()==ms.top())
+//         as.pop();
+//     ms.pop();
+    
+//    }
+
+// int top() {
+//      return ms.top();
+//    }
+ 
+// int getMin() {
+//       return as.top();
+//    }
+// };
+
+// int main()
+// {
+//     MyStack s;
+//     s.push(4);
+//     s.push(5);
+//     s.push(8);
+//     s.push(1);
+//     s.pop();
+ 
+//     cout<<" Minimum Element from Stack: " <<s.getMin();
+  
+//     return 0; 
+// }
+
+
+
+//// 
+
 
