@@ -948,4 +948,372 @@ s = {0, 1, 2, 3, 4, 5}: Index of the sixth element is pushed.
 
 
 
+////// Infix to postfix
+
+// class Conversion {
+//     private:
+//         int top;
+//         int capacity;
+//         char* array;
+//         string output;
+//         map<char, int> precedence;
+//     public:
+//         Conversion(int capacity) {
+//             top = -1;
+//             this->capacity = capacity;
+//             array = new char[capacity];
+//             output = "";
+//             precedence['+'] = 1;
+//             precedence['-'] = 1;
+//             precedence['*'] = 2;
+//             precedence['/'] = 2;
+//             precedence['^'] = 3;
+//         }
+//         bool isEmpty() {
+//             return (top == -1);
+//         }
+//         char peek() {
+//             return array[top];
+//         }
+//         char pop() {
+//             if (!isEmpty()) {
+//                 top--;
+//                 return array[top + 1];
+//             }
+//             else {
+//                 return '$';
+//             }
+//         }
+//         void push(char op) {
+//             top++;
+//             array[top] = op;
+//         }
+//         bool isOperand(char ch) {
+//             return isalpha(ch);
+//         }
+//         bool notGreater(char i) {
+//             map<char, int>::iterator a, b;
+//             a = precedence.find(i);
+//             b = precedence.find(peek());
+//             if (a != precedence.end() && b != precedence.end()) {
+//                 return (a->second <= b->second);
+//             }
+//             else {
+//                 return false;
+//             }
+//         }
+//         void infixToPostfix(string exp) {
+//             for (int i = 0; i < exp.length(); i++) {
+//                 if (isOperand(exp[i])) {
+//                     output += exp[i];
+//                 }
+//                 else if (exp[i] == '(') {
+//                     push(exp[i]);
+//                 }
+//                 else if (exp[i] == ')') {
+//                     while (!isEmpty() && peek() != '(') {
+//                         char a = pop();
+//                         output += a;
+//                     }
+//                     if (!isEmpty() && peek() != '(') {
+//                         cout << "Invalid expression" << endl;
+//                         return;
+//                     }
+//                     else {
+//                         pop();
+//                     }
+//                 }
+//                 else {
+//                     while (!isEmpty() && notGreater(exp[i])) {
+//                         char a = pop();
+//                         output += a;
+//                     }
+//                     push(exp[i]);
+//                 }
+//             }
+//             while (!isEmpty()) {
+//                 char a = pop();
+//                 output += a;
+//             }
+//             cout << output << endl;
+//         }
+// };
+
+// int main() {
+//     string exp = "a+b*(c^d-e)^(f+g*h)-i";
+//     Conversion obj(exp.length());
+//     obj.infixToPostfix(exp);
+//     return 0;
+// }
+
+
+
+////// Evaluation of postfix
+
+// class Evaluate {
+//     int top;
+//     int capacity;
+//     string* array;
+
+// public:
+//     Evaluate(int capacity) {
+//         top = -1;
+//         this->capacity = capacity;
+//         array = new string[capacity];
+//     }
+
+//     bool isEmpty() {
+//         return (top == -1);
+//     }
+
+//     string peek() {
+//         return array[top];
+//     }
+
+//     string pop() {
+//         if (!isEmpty()) {
+//             top--;
+//             return array[top+1];
+//         }
+//         else {
+//             return "$";
+//         }
+//     }
+
+//     void push(string op) {
+//         top++;
+//         array[top] = op;
+//     }
+
+//     int evaluatePostfix(string exp) {
+//         for (int i = 0; i < exp.length(); i++) {
+//             if (isdigit(exp[i])) {
+//                 push(string(1, exp[i]));
+//             } else {
+//                 string val1 = pop();
+//                 string val2 = pop();
+//                 int result;
+//                 int int_val1 = stoi(val1);
+//                 int int_val2 = stoi(val2);
+//                 switch(exp[i]) {
+//                     case '+':
+//                         result = int_val2 + int_val1;
+//                         break;
+//                     case '-':
+//                         result = int_val2 - int_val1;
+//                         break;
+//                     case '*':
+//                         result = int_val2 * int_val1;
+//                         break;
+//                     case '/':
+//                         result = int_val2 / int_val1;
+//                         break;
+//                 }
+//                 push(to_string(result));
+//             }
+//         }
+//         return stoi(pop());
+//     }
+// };
+
+// int main() {
+//     string exp = "231*+9-";
+//     Evaluate obj(exp.length());
+//     cout << "Postfix evaluation: " << obj.evaluatePostfix(exp) << endl;
+//     return 0;
+// }
+
+
+
+
+///// Infix to Prefix
+
+
+// // Function to check if given character is
+// // an operator or not.
+// bool isOperator(char c)
+// {
+// 	return (!isalpha(c) && !isdigit(c));
+// }
+
+// // Function to find priority of given
+// // operator.
+// int getPriority(char C)
+// {
+// 	if (C == '-' || C == '+')
+// 		return 1;
+// 	else if (C == '*' || C == '/')
+// 		return 2;
+// 	else if (C == '^')
+// 		return 3;
+// 	return 0;
+// }
+
+// // Function that converts infix
+// // expression to prefix expression.
+// string infixToPrefix(string infix)
+// {
+// 	// stack for operators.
+// 	stack<char> operators;
+
+// 	// stack for operands.
+// 	stack<string> operands;
+
+// 	for (int i = 0; i < infix.length(); i++) {
+
+// 		// If current character is an
+// 		// opening bracket, then
+// 		// push into the operators stack.
+// 		if (infix[i] == '(') {
+// 			operators.push(infix[i]);
+// 		}
+
+// 		// If current character is a
+// 		// closing bracket, then pop from
+// 		// both stacks and push result
+// 		// in operands stack until
+// 		// matching opening bracket is
+// 		// not found.
+// 		else if (infix[i] == ')') {
+// 			while (!operators.empty() &&
+// 				operators.top() != '(') {
+
+// 				// operand 1
+// 				string op1 = operands.top();
+// 				operands.pop();
+
+// 				// operand 2
+// 				string op2 = operands.top();
+// 				operands.pop();
+
+// 				// operator
+// 				char op = operators.top();
+// 				operators.pop();
+
+// 				// Add operands and operator
+// 				// in form operator +
+// 				// operand1 + operand2.
+// 				string tmp = op + op2 + op1;
+// 				operands.push(tmp);
+// 			}
+
+// 			// Pop opening bracket from
+// 			// stack.
+// 			operators.pop();
+// 		}
+
+// 		// If current character is an
+// 		// operand then push it into
+// 		// operands stack.
+// 		else if (!isOperator(infix[i])) {
+// 			operands.push(string(1, infix[i]));
+// 		}
+
+// 		// If current character is an
+// 		// operator, then push it into
+// 		// operators stack after popping
+// 		// high priority operators from
+// 		// operators stack and pushing
+// 		// result in operands stack.
+// 		else {
+// 			while (!operators.empty() &&
+// 				getPriority(infix[i]) <=
+// 					getPriority(operators.top())) {
+
+// 				string op1 = operands.top();
+// 				operands.pop();
+
+// 				string op2 = operands.top();
+// 				operands.pop();
+
+// 				char op = operators.top();
+// 				operators.pop();
+
+// 				string tmp = op + op2 + op1;
+// 				operands.push(tmp);
+// 			}
+
+// 			operators.push(infix[i]);
+// 		}
+// 	}
+
+// 	// Pop operators from operators stack
+// 	// until it is empty and add result
+// 	// of each pop operation in
+// 	// operands stack.
+// 	while (!operators.empty()) {
+// 		string op1 = operands.top();
+// 		operands.pop();
+
+// 		string op2 = operands.top();
+// 		operands.pop();
+
+// 		char op = operators.top();
+// 		operators.pop();
+
+// 		string tmp = op + op2 + op1;
+// 		operands.push(tmp);
+// 	}
+
+// 	// Final prefix expression is
+// 	// present in operands stack.
+// 	return operands.top();
+// }
+
+// // Driver code
+// int main()
+// {
+// 	string s = "(A-B/C)*(A/K-L)";
+// 	cout << infixToPrefix(s);
+// 	return 0;
+// }
+
+
+ 
+ //// Evaluation of prefix
+
+
+// bool is_operand(char c) {
+//     return isdigit(c);
+// }
+
+// int evaluate(string expression) {
+//     stack<int> stack;
+
+//     for (int i = expression.size() - 1; i >= 0; i--) {
+//         char c = expression[i];
+
+//         if (is_operand(c)) {
+//             stack.push(c - '0');
+//         }
+//         else {
+//             int o1 = stack.top();
+//             stack.pop();
+//             int o2 = stack.top();
+//             stack.pop();
+
+//             if (c == '+') {
+//                 stack.push(o1 + o2);
+//             }
+//             else if (c == '-') {
+//                 stack.push(o1 - o2);
+//             }
+//             else if (c == '*') {
+//                 stack.push(o1 * o2);
+//             }
+//             else if (c == '/') {
+//                 stack.push(o1 / o2);
+//             }
+//         }
+//     }
+
+//     return stack.top();
+// }
+
+// int main() {
+//     string test_expression = "+9*26";
+//     cout << evaluate(test_expression) << endl;
+
+//     return 0;
+// }
 
